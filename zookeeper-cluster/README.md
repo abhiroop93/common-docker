@@ -1,7 +1,7 @@
 # Zookeeper Cluster with Web
 * [General info](#general-info)
 * [Setup](#setup)
-* [Sources] (#sources)
+* [Sources](#sources)
 
 ## General info
 This will initialize a zookeeper cluster with 3 nodes at ports 2181, 2182 and 2183, alongwith web ui running at port 8080.
