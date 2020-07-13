@@ -1,0 +1,62 @@
+version: '2'
+
+services:
+  zookeeper1:
+    image: 'bitnami/zookeeper:latest'
+    restart: always    
+    ports:
+      - '2181:2181'
+      - '2888'
+      - '3888'
+    volumes:
+      - zookeeper1:/bitnami/zookeeper
+    environment:
+      - ZOO_SERVER_ID=1
+      - ZOO_SERVERS=0.0.0.0:2888:3888,zookeeper2:2888:3888,zookeeper3:2888:3888
+      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ZOO_HEAP_SIZE=1024
+    logging:
+      options:
+       max-size: "1g"      
+  zookeeper2:
+    image: 'bitnami/zookeeper:latest'
+    restart: always    
+    ports:
+      - '2182:2181'
+      - '2888'
+      - '3888'
+    volumes:
+      - zookeeper2:/bitnami/zookeeper
+    environment:
+      - ZOO_SERVER_ID=2
+      - ZOO_SERVERS=zookeeper1:2888:3888,0.0.0.0:2888:3888,zookeeper3:2888:3888
+      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ZOO_HEAP_SIZE=1024
+    logging:
+      options:
+       max-size: "1g"      
+  zookeeper3:
+    image: 'bitnami/zookeeper:latest'
+    restart: always    
+    ports:
+      - '2183:2181'
+      - '2888'
+      - '3888'
+    volumes:
+      - zookeeper3:/bitnami/zookeeper
+    environment:
+      - ZOO_SERVER_ID=3
+      - ZOO_SERVERS=zookeeper1:2888:3888,zookeeper2:2888:3888,0.0.0.0:2888:3888
+      - ALLOW_ANONYMOUS_LOGIN=yes      
+      - ZOO_HEAP_SIZE=1024
+    logging:
+      options:
+       max-size: "1g"
+  web:
+    image: tobilg/zookeeper-webui
+    restart: always    
+    ports:
+      - '8080:8080'
+    environment:
+      - USER=web
+      - PASSWORD=admin
